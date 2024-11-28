@@ -128,9 +128,9 @@ void Player::movePlayer()
     }
 
     // Handle collisions and movement
-    checkFoodCollision(headNew);
-    checkSelfCollision(headNew);
-    handleMovement(headNew);
+    foodCollisionCheck(headNew);
+    selfCollisionCheck(headNew);
+    snakeMovement(headNew);
 
 }
 
@@ -198,7 +198,7 @@ void Player::updatePlayerDelay()
 
 // More methods to be added
 
-void Player::checkFoodCollision(const objPos &headNew) 
+void Player::foodCollisionCheck(const objPos &headNew) 
 {
     if (headNew.pos -> x == food -> getFoodPos().pos -> x && 
         headNew.pos -> y == food -> getFoodPos().pos -> y)
@@ -210,7 +210,7 @@ void Player::checkFoodCollision(const objPos &headNew)
 }
 
 // Check if the player collides with itself
-void Player::checkSelfCollision(const objPos &headNew) 
+void Player::selfCollisionCheck(const objPos &headNew) 
 {
     for (int i = 1; i < playerPosList -> getSize(); i++) 
     { // Skip the head at index 0
@@ -227,7 +227,7 @@ void Player::checkSelfCollision(const objPos &headNew)
 }
 
 // Handle regular movement (if no collision occurs)
-void Player::handleMovement(const objPos &headNew) 
+void Player::snakeMovement(const objPos &headNew) 
 {
     if (headNew.pos -> x == food -> getFoodPos().pos -> x && 
         headNew.pos -> y == food -> getFoodPos().pos -> y) 
