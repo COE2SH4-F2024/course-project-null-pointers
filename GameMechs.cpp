@@ -22,8 +22,8 @@ GameMechs::GameMechs(int boardX, int boardY)
     speed = 3;
     delay = 100000;
     score = 0;
-    boardSizeX = 30;
-    boardSizeY = 15;
+    boardSizeX = boardX;
+    boardSizeY = boardY;
     // food = new Food();
     food = objPos(0, 0, '@');
 }

@@ -27,7 +27,7 @@ class Player
         void updatePlayerSpeed();
         void updatePlayerDelay();
         void movePlayer();
-        void foodCollisionCheck(const objPos &headNew);
+        void foodConsumption(const objPos &headNew);
         void selfCollisionCheck(const objPos &headNew);
         void snakeMovement(const objPos &headNew);
 

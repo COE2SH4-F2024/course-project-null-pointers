@@ -78,8 +78,7 @@ void Player::movePlayer()
 {
     // PPA3 Finite State Machine logic
 
-    objPos headCur = playerPosList -> getHeadElement();
-    objPos headNew = headCur;
+    objPos headNew = playerPosList -> getHeadElement();
 
     switch (myDir)
     {
@@ -87,7 +86,7 @@ void Player::movePlayer()
             return;
 
         case LEFT:
-            headNew.pos -> x = headCur.pos -> x - 1;
+            headNew.pos -> x = headNew.pos -> x - 1;
             // Wrap right
             if (headNew.pos -> x == 0) 
             {
@@ -96,7 +95,7 @@ void Player::movePlayer()
             break;
 
         case RIGHT:
-            headNew.pos -> x = headCur.pos -> x + 1;
+            headNew.pos -> x = headNew.pos -> x + 1;
             // Wrap  left
             if (headNew.pos -> x == mainGameMechsRef -> getBoardSizeX() - 1) 
             {
@@ -105,7 +104,7 @@ void Player::movePlayer()
             break;
             
         case UP:
-            headNew.pos -> y = headCur.pos -> y - 1;
+            headNew.pos -> y = headNew.pos -> y - 1;
             // Wrap bottom
             if (headNew.pos -> y == 0) 
             {
@@ -114,7 +113,7 @@ void Player::movePlayer()
             break;
 
         case DOWN:
-            headNew.pos -> y = headCur.pos -> y + 1;
+            headNew.pos -> y = headNew.pos -> y + 1;
             // Wrap top
             if (headNew.pos -> y == mainGameMechsRef -> getBoardSizeY() - 1) 
             {
@@ -128,7 +127,7 @@ void Player::movePlayer()
     }
 
     // Handle collisions and movement
-    foodCollisionCheck(headNew);
+    foodConsumption(headNew);
     selfCollisionCheck(headNew);
     snakeMovement(headNew);
 
@@ -198,7 +197,7 @@ void Player::updatePlayerDelay()
 
 // More methods to be added
 
-void Player::foodCollisionCheck(const objPos &headNew) 
+void Player::foodConsumption(const objPos &headNew) 
 {
     if (headNew.pos -> x == food -> getFoodPos().pos -> x && 
         headNew.pos -> y == food -> getFoodPos().pos -> y)
