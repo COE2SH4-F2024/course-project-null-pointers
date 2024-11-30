@@ -11,14 +11,15 @@
 class Food 
 {
 private:
-    objPos foodPos; // Tracks the position of the food
+    objPosArrayList *foodStorage;
+    char foodSymbol;
 
 public:
     Food(); // Constructor
     ~Food(); // Destructor (if needed)
 
-    void generateFood(const objPosArrayList *blockOff);
-    objPos getFoodPos() const;
+    void generateFood(const objPosArrayList *blockOff, int specialFood);
+    objPosArrayList* getFoodPos() const;
 };
 
 #endif

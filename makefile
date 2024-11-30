@@ -18,5 +18,5 @@ ${EXEC} : $(OBJ)
 	$(CC) ${OSSETTING} -o $@ $^ $(CFLAGS) ${POSTLINKER}
 
 clean :
-	rm -r ${OBJ} ${EXEC} ${EXEC}.exe
+	del /f /q ${OBJ} ${EXEC} ${EXEC}.exe
 

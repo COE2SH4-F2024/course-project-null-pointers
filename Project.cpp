@@ -48,8 +48,11 @@ void Initialize(void)
     food = new Food();
     snake = new Player(mechanisms, food);
 
-    // Create first food item
-    food -> generateFood(snake -> getPlayerPosList());
+    for(int i = 1; i <= 5; i++)
+    {
+        food -> generateFood(snake -> getPlayerPosList(), i); // I can really just call it with the argument 1 three times,
+                                                              // but I think this is more clear as to whats going on
+    }
 }
 
 void GetInput(void)
@@ -77,24 +80,26 @@ void DrawScreen(void)
     int y;
     int i;
 
-    // draw the board
+    // Draw the board
     for (y = 0; y < BOARD_HEIGHT; y++)
     {
         for (x = 0; x < BOARD_LENGTH; x++)
         {
-            // Draw borders regardless
+            // Draw borders
             if (x == 0 || x == (BOARD_LENGTH - 1) || y == 0 || y == (BOARD_HEIGHT - 1))
-                {
-                    MacUILib_printf("#");
-                    continue;
-                }
-            
+            {
+                MacUILib_printf("#");
+                continue; // Skip further checks for border cells
+            }
+
             bool snakePresent = false;
+            bool foodPresent = false;
 
             // Check if the snake is in this coordinate
             for (i = 0; i < snake -> getPlayerPosList() -> getSize(); i++)
             {
-                objPos snakeTorso = snake -> getPlayerPosList() -> getElement(i);
+                objPos snakeTorso = snake -> getPlayerPosList() -> getElement(i); // Get each snake bodypart position
+
                 if (snakeTorso.pos -> x == x && snakeTorso.pos -> y == y)
                 {
                     MacUILib_printf("%c", snakeTorso.symbol);
@@ -103,43 +108,40 @@ void DrawScreen(void)
                 }
             }
 
-            if (snakePresent)
-            {
-                continue; // Skip further checks for this cell
-            }
-
-            // If the snake isn't there, continue to draw the board
+            // If snake is not present, check if food is in this coordinate
             if (!snakePresent)
             {
-                // First, check if that position is filled with food
-                if (x == food -> getFoodPos().pos -> x && y == food -> getFoodPos().pos -> y)
+                for (i = 0; i < food -> getFoodPos() -> getSize(); i++)
                 {
-                    MacUILib_printf("@");
-                    continue;
-                }
+                    objPos currentFood = food -> getFoodPos() -> getElement(i); // Get each food position
 
-                // nothing otherwise
-                else
-                {
-                    MacUILib_printf(" ");
-                    continue;
+                    if (currentFood.pos -> x == x && currentFood.pos -> y == y)
+                    {
+                        MacUILib_printf("%c", currentFood.getSymbol()); 
+                        foodPresent = true;
+                        break; // No need to check further for food
+                    }
                 }
             }
 
+            // If neither snake nor food is present, print empty space
+            if (!snakePresent && !foodPresent)
+            {
+                MacUILib_printf(" ");
+            }
         }
         MacUILib_printf("\n");
     }
-    
-    MacUILib_printf("Score: %d\n", mechanisms -> getScore());  
 
+    // Display score and speed information
+    MacUILib_printf("Score: %d\n", mechanisms -> getScore());
     MacUILib_printf("Current Speed Level: %d\n", mechanisms -> getSpeed());
     MacUILib_printf("Press '+' to increase speed, '-' to decrease speed.\n");
-
 }
 
 void LoopDelay(void)
 {
-    MacUILib_Delay(mechanisms -> getDelay()); // 0.1s delay
+    MacUILib_Delay(mechanisms -> getDelay()); // 0.1s delay by default
 }
 
 

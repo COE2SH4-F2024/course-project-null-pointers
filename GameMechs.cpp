@@ -10,8 +10,6 @@ GameMechs::GameMechs()
     score = 0;
     boardSizeX = 30;
     boardSizeY = 15;
-    food = objPos(0, 0, '@');
-    // food = new Food(); // Use dynamically allocated Food object
 }
 
 GameMechs::GameMechs(int boardX, int boardY)
@@ -24,8 +22,6 @@ GameMechs::GameMechs(int boardX, int boardY)
     score = 0;
     boardSizeX = boardX;
     boardSizeY = boardY;
-    // food = new Food();
-    food = objPos(0, 0, '@');
 }
 
 // do you need a destructor?
@@ -64,9 +60,9 @@ int GameMechs::getScore() const
     return score;
 }
 
-void GameMechs::incrementScore()
+void GameMechs::incrementScore(int input)
 {
-    score++;
+    score = score + input;
 }
 
 int GameMechs::getBoardSizeX() const
@@ -108,5 +104,3 @@ void GameMechs::clearInput()
 {
     input = 0;
 }
-
-// More methods should be added here

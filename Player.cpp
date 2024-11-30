@@ -1,15 +1,21 @@
 #include "Player.h"
 #include "objPosArrayList.h"
 
-Player::Player(GameMechs* thisGMRef, Food *foodReference)
+Player::Player(GameMechs* thisGMRef, Food *foodRef)
 {
     mainGameMechsRef = thisGMRef;
     myDir = STOP;
-    food = foodReference;
+    food = foodRef;
 
     // more actions to be included
+
+    int boardParametersX = mainGameMechsRef -> getBoardSizeX();
+    int boardParametersY = mainGameMechsRef -> getBoardSizeY();
+
     playerPosList = new objPosArrayList();
-    playerPosList -> insertHead(objPos(15, 7, '*'));
+    playerPosList -> insertHead(objPos(boardParametersX / 2, // Print snake in the middle of the board
+                                       boardParametersY / 2, 
+                                       '*'));
 }
 
 Player::~Player()
@@ -135,6 +141,7 @@ void Player::movePlayer()
 
 void Player::updatePlayerSpeed()
 {
+    // Need to get speed and input
     char input = mainGameMechsRef -> getInput();
     int speed = mainGameMechsRef -> getSpeed(); 
 
@@ -167,9 +174,11 @@ void Player::updatePlayerSpeed()
 
 void Player::updatePlayerDelay()
 {
+    // Need to get speed and delay
     int speed = mainGameMechsRef -> getSpeed(); 
     int delay = mainGameMechsRef -> getDelay();
 
+    // Change delay
     switch (speed)
     {
         case 1:
@@ -191,6 +200,7 @@ void Player::updatePlayerDelay()
             delay = 100000; 
             break;
     }
+
     mainGameMechsRef -> setDelay(delay);
 }
 
@@ -199,24 +209,72 @@ void Player::updatePlayerDelay()
 
 void Player::foodConsumption(const objPos &headNew) 
 {
-    if (headNew.pos -> x == food -> getFoodPos().pos -> x && 
-        headNew.pos -> y == food -> getFoodPos().pos -> y)
+    int i;
+    int j;
+    int k;
+
+    for(i = 0; i < food -> getFoodPos() -> getSize(); i++)
     {
-        playerPosList -> insertHead(headNew);
-        food -> generateFood(playerPosList);
-        mainGameMechsRef -> incrementScore();
+        if (headNew.pos -> x == food -> getFoodPos() -> getElement(i).pos -> x && 
+            headNew.pos -> y == food -> getFoodPos() -> getElement(i).pos -> y)
+        {
+            // Start generation of new food
+            int foodGenerator = rand() % (5) + 1;
+            char specialFood = food -> getFoodPos() -> getElement(i).getSymbol();
+
+            if(specialFood == 'G') // Golden Apple, increase score by 50, length by 10
+            {
+                mainGameMechsRef -> incrementScore(50);
+                playerPosList -> insertTails(10);
+                
+            }
+
+            else if(specialFood == 'S') // Special Apple, increase score by 10, and don't increase length
+            {
+                mainGameMechsRef -> incrementScore(10);
+            }
+
+            else  // normal food
+            {
+                mainGameMechsRef -> incrementScore(1);
+                playerPosList -> insertTails(1);
+            }
+
+            food -> getFoodPos() -> removeElement(i);
+
+            // Generate Special Apple
+            if(foodGenerator == 4) 
+            {
+                food -> generateFood(playerPosList, 4);
+            }
+
+            // Generate Golden Apple
+            else if (foodGenerator == 5) 
+            {
+                food -> generateFood(playerPosList, 5);
+            }
+
+            // Generate Normal Apple
+            else
+            {
+                food -> generateFood(playerPosList, 1);   
+            }
+        }
     }
 }
 
 // Check if the player collides with itself
 void Player::selfCollisionCheck(const objPos &headNew) 
 {
-    for (int i = 1; i < playerPosList -> getSize(); i++) 
+
+    int i;
+
+    for (i = 1; i < playerPosList -> getSize(); i++) 
     { // Skip the head at index 0
 
         objPos bodyPart = playerPosList -> getElement(i);
 
-        if (headNew.pos -> x == bodyPart.pos -> x && 
+        if (headNew.pos -> x == bodyPart.pos -> x &&
             headNew.pos -> y == bodyPart.pos -> y) 
         {
             mainGameMechsRef -> setLoseFlag();
@@ -228,10 +286,16 @@ void Player::selfCollisionCheck(const objPos &headNew)
 // Handle regular movement (if no collision occurs)
 void Player::snakeMovement(const objPos &headNew) 
 {
-    if (headNew.pos -> x == food -> getFoodPos().pos -> x && 
-        headNew.pos -> y == food -> getFoodPos().pos -> y) 
+
+    int i;
+
+    for(i = 0; i < food -> getFoodPos() -> getSize(); i++)
     {
-        return; // Skip movement if a collision is detected
+        if (headNew.pos -> x == food -> getFoodPos() -> getElement(i).pos -> x && 
+            headNew.pos -> y == food -> getFoodPos() -> getElement(i).pos -> y)
+        {
+            return;
+        }
     }
 
     playerPosList -> insertHead(headNew);

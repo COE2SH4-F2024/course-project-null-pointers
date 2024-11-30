@@ -23,8 +23,6 @@ class GameMechs
         int boardSizeX;
         int boardSizeY;
 
-        objPos food;
-
     public:
         GameMechs();
         GameMechs(int boardX, int boardY);
@@ -47,9 +45,7 @@ class GameMechs
         int getBoardSizeY() const;
         
         int getScore() const;
-        void incrementScore();
-        
-        // More methods should be added here
+        void incrementScore(int input);
 };
 
 #endif

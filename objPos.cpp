@@ -26,20 +26,28 @@ objPos::~objPos()
 }
 
 // Copy Constructor
-objPos::objPos(const objPos &p)
+objPos::objPos(const objPos &copy)
 {
     pos = new Pos;
-    pos -> x = p.pos -> x;
-    pos -> y = p.pos -> y;
-    symbol = p.symbol;
+    pos -> x = copy.pos -> x;
+    pos -> y = copy.pos -> y;
+    symbol = copy.symbol;
 }
 
 // Copy Assignment Operator
-objPos &objPos::operator=(const objPos &p)
+objPos &objPos::operator=(const objPos &copy)
 {
-    pos -> x = p.pos -> x;
-    pos -> y = p.pos -> y;
-    symbol = p.symbol;
+    if (this != &copy)  // Check for self-assignment
+    {
+        // Clean up existing resources
+        delete pos;
+
+        // Allocate new memory and copy the data
+        pos = new Pos;
+        pos->x = copy.pos->x;
+        pos->y = copy.pos->y;
+        symbol = copy.symbol;
+    }
 
     return *this;
 }

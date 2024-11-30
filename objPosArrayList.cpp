@@ -42,6 +42,14 @@ void objPosArrayList::insertTail(objPos thisPos)
     }
 }
 
+void objPosArrayList::insertTails(int num) 
+{
+    if (listSize < arrayCapacity)
+    {
+        listSize = listSize + num;
+    }
+}
+
 void objPosArrayList::removeHead()
 {
     if (listSize >= 1)
@@ -79,8 +87,19 @@ objPos objPosArrayList::getTailElement() const
 
 objPos objPosArrayList::getElement(int index) const
 {   
-    if (index >= 0 && index < listSize) {
-        return aList[index];
+    return aList[index];
+}
+
+void objPosArrayList::removeElement(int index)
+{
+    int i;
+
+    if (listSize >= 1 && index >= 0 && index < listSize)
+    {
+        for (i = index; i < listSize - 1; i++)
+        {
+            aList[i] = aList[i + 1];
+        }
+        listSize--;
     }
-    return objPos();
 }
