@@ -19,7 +19,7 @@ public:
     ~Food(); // Destructor (if needed)
 
     void generateFood(const objPosArrayList *blockOff, int specialFood);
-    objPosArrayList* getFoodPos() const;
+    objPosArrayList* getFoodIndex() const;
 };
 
 #endif

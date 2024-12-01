@@ -111,9 +111,9 @@ void DrawScreen(void)
             // If snake is not present, check if food is in this coordinate
             if (!snakePresent)
             {
-                for (i = 0; i < food -> getFoodPos() -> getSize(); i++)
+                for (i = 0; i < food -> getFoodIndex() -> getSize(); i++)
                 {
-                    objPos currentFood = food -> getFoodPos() -> getElement(i); // Get each food position
+                    objPos currentFood = food -> getFoodIndex() -> getElement(i); // Get each food position
 
                     if (currentFood.pos -> x == x && currentFood.pos -> y == y)
                     {
@@ -156,7 +156,7 @@ void CleanUp(void)
     }
 
     // Check if the player won based on the score
-    else if (mechanisms -> getScore() >= 5) 
+    else if (mechanisms -> getScore() >= 100) 
     {
         MacUILib_printf("Congratulations you win :|, you need a job man\nYour score this time was %d points\n", mechanisms -> getScore());
     }

@@ -17,6 +17,55 @@ int objPosArrayList::getSize() const
     return listSize;
 }
 
+objPosArrayList::objPosArrayList(objPosArrayList& copy)
+{
+
+    int i;
+
+    // Allocate new memory for the array
+    listSize = copy.listSize;
+
+    arrayCapacity = copy.arrayCapacity;
+
+    aList = new objPos[arrayCapacity];
+
+    // Copy the elements from the other object
+    for (i = 0; i < listSize; ++i) 
+    {
+        aList[i] = copy.aList[i];
+    }
+}
+
+// Copy Assignment Operator
+objPosArrayList& objPosArrayList::operator=(const objPosArrayList& copy)
+{
+    int i;
+
+    // Self-assignment check
+    if (this == &copy) 
+    {
+        return *this;
+    }
+
+    // Clean up any existing resources
+    delete[] aList;
+
+    // Allocate new memory for the array
+    listSize = copy.listSize;
+
+    arrayCapacity = copy.arrayCapacity;
+
+    aList = new objPos[arrayCapacity];
+
+    // Copy the elements from the other object
+    for (i = 0; i < listSize; ++i) 
+    {
+        aList[i] = copy.aList[i];
+    }
+
+    return *this;
+}
+
 void objPosArrayList::insertHead(objPos thisPos)
 {
     int i;

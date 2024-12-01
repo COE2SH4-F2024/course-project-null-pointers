@@ -14,7 +14,7 @@ Food::~Food()
 void Food::generateFood(const objPosArrayList *blockOff, int specialFood) 
 {
     // Initialization
-    int randomX, randomY, i;
+    int randomX, randomY, x, y;
     bool validPosition = false;
     char foodSymbol;
     bool occupied[BOARD_LENGTH][BOARD_HEIGHT];
@@ -27,26 +27,28 @@ void Food::generateFood(const objPosArrayList *blockOff, int specialFood)
     {
         validPosition = true; // Start by assuming the position is valid
 
-        for (i = 0; i < BOARD_LENGTH; i++) 
+        for (x = 0; x < BOARD_LENGTH; x++) 
         {
-            for (int j = 0; j < BOARD_HEIGHT; j++) 
+            for (y = 0; y < BOARD_HEIGHT; y++) 
             {
-                occupied[i][j] = 0; // Set all positions to 0 initially (empty)
+                occupied[x][y] = 0; // Set all positions to 0 initially (empty)
             }
         }
 
         // Check if player is occupying where food wants to be generated
-        for (i = 0; i < blockOff -> getSize(); i++) 
+        for (x = 0; x < blockOff -> getSize(); x++) 
         {
-            objPos player = blockOff -> getElement(i);
+            objPos occupiedPlayerX = blockOff -> getElement(x);
             
-            occupied[player.pos -> x][player.pos -> y] = 1;
+            occupied[occupiedPlayerX.pos -> x][occupiedPlayerX.pos -> y] = 1;
         }
+
         // Check if food is already occupying where food wants to be generated
-        for (i = 0; i < foodStorage -> getSize(); i++) 
+        for (x = 0; x < foodStorage -> getSize(); x++) 
         {
-            objPos food = foodStorage -> getElement(i);
-            occupied[food.pos -> x][food.pos -> y] = 1;
+            objPos occupiedFoodX = foodStorage -> getElement(x);
+
+            occupied[occupiedFoodX.pos -> x][occupiedFoodX.pos -> y] = 1;
         }
 
         // Generate random x, y coordinates for new food
@@ -89,7 +91,7 @@ void Food::generateFood(const objPosArrayList *blockOff, int specialFood)
     }
 }
 
-objPosArrayList* Food::getFoodPos() const 
+objPosArrayList* Food::getFoodIndex() const 
 {
     return foodStorage;
 }

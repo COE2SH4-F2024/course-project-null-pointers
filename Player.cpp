@@ -204,7 +204,6 @@ void Player::updatePlayerDelay()
     mainGameMechsRef -> setDelay(delay);
 }
 
-
 // More methods to be added
 
 void Player::foodConsumption(const objPos &headNew) 
@@ -213,14 +212,14 @@ void Player::foodConsumption(const objPos &headNew)
     int j;
     int k;
 
-    for(i = 0; i < food -> getFoodPos() -> getSize(); i++)
+    for(i = 0; i < food -> getFoodIndex() -> getSize(); i++)
     {
-        if (headNew.pos -> x == food -> getFoodPos() -> getElement(i).pos -> x && 
-            headNew.pos -> y == food -> getFoodPos() -> getElement(i).pos -> y)
+        if (headNew.pos -> x == food -> getFoodIndex() -> getElement(i).pos -> x && 
+            headNew.pos -> y == food -> getFoodIndex() -> getElement(i).pos -> y)
         {
             // Start generation of new food
             int foodGenerator = rand() % (5) + 1;
-            char specialFood = food -> getFoodPos() -> getElement(i).getSymbol();
+            char specialFood = food -> getFoodIndex() -> getElement(i).getSymbol();
 
             if(specialFood == 'G') // Golden Apple, increase score by 50, length by 10
             {
@@ -240,7 +239,7 @@ void Player::foodConsumption(const objPos &headNew)
                 playerPosList -> insertTails(1);
             }
 
-            food -> getFoodPos() -> removeElement(i);
+            food -> getFoodIndex() -> removeElement(i);
 
             // Generate Special Apple
             if(foodGenerator == 4) 
@@ -289,10 +288,10 @@ void Player::snakeMovement(const objPos &headNew)
 
     int i;
 
-    for(i = 0; i < food -> getFoodPos() -> getSize(); i++)
+    for(i = 0; i < food -> getFoodIndex() -> getSize(); i++)
     {
-        if (headNew.pos -> x == food -> getFoodPos() -> getElement(i).pos -> x && 
-            headNew.pos -> y == food -> getFoodPos() -> getElement(i).pos -> y)
+        if (headNew.pos -> x == food -> getFoodIndex() -> getElement(i).pos -> x && 
+            headNew.pos -> y == food -> getFoodIndex() -> getElement(i).pos -> y)
         {
             return;
         }

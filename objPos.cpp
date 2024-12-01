@@ -44,8 +44,8 @@ objPos &objPos::operator=(const objPos &copy)
 
         // Allocate new memory and copy the data
         pos = new Pos;
-        pos->x = copy.pos->x;
-        pos->y = copy.pos->y;
+        pos -> x = copy.pos -> x;
+        pos -> y = copy.pos -> y;
         symbol = copy.symbol;
     }
 
