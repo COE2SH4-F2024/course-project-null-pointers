@@ -31,7 +31,7 @@ void Food::generateFood(const objPosArrayList *blockOff, int specialFood)
         {
             for (y = 0; y < BOARD_HEIGHT; y++) 
             {
-                occupied[x][y] = 0; // Set all positions to 0 initially (empty)
+                occupied[x][y] = false; // Set all positions to false initially (empty)
             }
         }
 
@@ -40,7 +40,7 @@ void Food::generateFood(const objPosArrayList *blockOff, int specialFood)
         {
             objPos occupiedPlayerX = blockOff -> getElement(x);
             
-            occupied[occupiedPlayerX.pos -> x][occupiedPlayerX.pos -> y] = 1;
+            occupied[occupiedPlayerX.pos -> x][occupiedPlayerX.pos -> y] = true; // sets position to true (occupied)
         }
 
         // Check if food is already occupying where food wants to be generated
@@ -48,7 +48,7 @@ void Food::generateFood(const objPosArrayList *blockOff, int specialFood)
         {
             objPos occupiedFoodX = foodStorage -> getElement(x);
 
-            occupied[occupiedFoodX.pos -> x][occupiedFoodX.pos -> y] = 1;
+            occupied[occupiedFoodX.pos -> x][occupiedFoodX.pos -> y] = true;  // sets position to true (occupied)
         }
 
         // Generate random x, y coordinates for new food
@@ -56,7 +56,7 @@ void Food::generateFood(const objPosArrayList *blockOff, int specialFood)
         randomY = (rand() % (BOARD_HEIGHT - 2)) + 1;
 
         // Check if the generated position is occupied (either by player or food)
-        if (occupied[randomX][randomY] == 1) 
+        if (occupied[randomX][randomY] == true) 
         {
             validPosition = false; // If occupied, set validPosition to false and try again
         }
@@ -85,8 +85,8 @@ void Food::generateFood(const objPosArrayList *blockOff, int specialFood)
             }
 
             // Create the food position object and insert it into the food storage
-            objPos foodPos = objPos(randomX, randomY, foodSymbol);
-            foodStorage -> insertHead(foodPos);
+            objPos newFood = objPos(randomX, randomY, foodSymbol);
+            foodStorage -> insertHead(newFood);
         }
     }
 }
