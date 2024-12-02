@@ -10,6 +10,7 @@ objPosArrayList::objPosArrayList()
 objPosArrayList::~objPosArrayList()
 {
     delete[] aList;
+    aList = nullptr;
 }
 
 int objPosArrayList::getSize() const
@@ -101,10 +102,10 @@ void objPosArrayList::insertTails(int num)
 
 void objPosArrayList::removeHead()
 {
+    int i;
+
     if (listSize >= 1)
     {
-
-        int i;
 
         for (i = 0; i < listSize - 1; i++)
         {
@@ -120,6 +121,7 @@ void objPosArrayList::removeTail()
     // Check this would not result in a negative list size
     if (listSize >= 1)
     {
+        aList[listSize - 1] = objPos();
         listSize--;
     }
 }
@@ -139,6 +141,7 @@ objPos objPosArrayList::getElement(int index) const
     return aList[index];
 }
 
+// Like removeHead but used if we need to specify an index
 void objPosArrayList::removeElement(int index)
 {
     int i;

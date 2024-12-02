@@ -86,50 +86,53 @@ void Player::movePlayer()
 
     objPos headNew = playerPosList -> getHeadElement();
 
+    // Handle movement based on the current state
+
     switch (myDir)
     {
         case STOP:
+            // Does nothing when stationary
             return;
 
         case LEFT:
-            headNew.pos -> x = headNew.pos -> x - 1;
-            // Wrap right
-            if (headNew.pos -> x == 0) 
-            {
-                headNew.pos -> x = mainGameMechsRef -> getBoardSizeX() - 2;
-            }
+            headNew.pos -> x--; // Move left
             break;
 
         case RIGHT:
-            headNew.pos -> x = headNew.pos -> x + 1;
-            // Wrap  left
-            if (headNew.pos -> x == mainGameMechsRef -> getBoardSizeX() - 1) 
-            {
-                headNew.pos -> x = 1;
-            }
+            headNew.pos -> x++; // Move right
             break;
-            
+
         case UP:
-            headNew.pos -> y = headNew.pos -> y - 1;
-            // Wrap bottom
-            if (headNew.pos -> y == 0) 
-            {
-                headNew.pos -> y = mainGameMechsRef -> getBoardSizeY() - 2;
-            }
+            headNew.pos -> y--; // Move up
             break;
 
         case DOWN:
-            headNew.pos -> y = headNew.pos -> y + 1;
-            // Wrap top
-            if (headNew.pos -> y == mainGameMechsRef -> getBoardSizeY() - 1) 
-            {
-                headNew.pos -> y = 1;
-            }
+            headNew.pos -> y++; // Move down
             break;
 
         default:
             // Handle unexpected direction states (if any)
             break;
+    }
+
+    if (headNew.pos -> x < 1)
+    {
+        headNew.pos -> x = mainGameMechsRef -> getBoardSizeX() - 2; // Wrap to the right
+    }
+
+    else if (headNew.pos -> x >= mainGameMechsRef -> getBoardSizeX() - 1)
+    {
+        headNew.pos -> x = 1; // Wrap to the left
+    }
+
+    if (headNew.pos -> y < 1)
+    {
+        headNew.pos -> y = mainGameMechsRef->getBoardSizeY() - 2; // Wrap to the bottom
+    }
+
+    else if (headNew.pos -> y >= mainGameMechsRef -> getBoardSizeY() - 1)
+    {
+        headNew.pos -> y = 1; // Wrap to the top
     }
 
     // Handle collisions and movement
@@ -211,15 +214,20 @@ void Player::foodConsumption(const objPos &headNew)
     int i;
     int j;
     int k;
+    auto foodIndex = food -> getFoodIndex();
+    int foodStorageSize = foodIndex -> getSize();
 
-    for(i = 0; i < food -> getFoodIndex() -> getSize(); i++)
+    for(i = 0; i < foodStorageSize; i++)
     {
-        if (headNew.pos -> x == food -> getFoodIndex() -> getElement(i).pos -> x && 
-            headNew.pos -> y == food -> getFoodIndex() -> getElement(i).pos -> y)
+
+        auto foodLocation = foodIndex -> getElement(i).pos;
+
+        if (headNew.pos -> x == foodLocation -> x && 
+            headNew.pos -> y == foodLocation -> y)
         {
             // Start generation of new food
             int foodGenerator = rand() % (5) + 1;
-            char specialFood = food -> getFoodIndex() -> getElement(i).getSymbol();
+            char specialFood = foodIndex -> getElement(i).getSymbol();
 
             if(specialFood == 'G') // Golden Apple, increase score by 50, length by 10
             {
@@ -288,10 +296,16 @@ void Player::snakeMovement(const objPos &headNew)
 
     int i;
 
-    for(i = 0; i < food -> getFoodIndex() -> getSize(); i++)
+    auto foodIndex = food -> getFoodIndex();
+    int foodSize = foodIndex -> getSize();
+
+    for(i = 0; i < foodSize; i++)
     {
-        if (headNew.pos -> x == food -> getFoodIndex() -> getElement(i).pos -> x && 
-            headNew.pos -> y == food -> getFoodIndex() -> getElement(i).pos -> y)
+
+        auto foodLocation = foodIndex -> getElement(i).pos;
+        
+        if (headNew.pos -> x == foodLocation -> x &&
+            headNew.pos -> y == foodLocation -> y)
         {
             return;
         }

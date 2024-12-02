@@ -44,7 +44,7 @@ void Initialize(void)
     MacUILib_init();
     MacUILib_clearScreen();
 
-    mechanisms = new GameMechs(30, 15);
+    mechanisms = new GameMechs(BOARD_LENGTH, BOARD_HEIGHT);
     food = new Food();
     snake = new Player(mechanisms, food);
 
